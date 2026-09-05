@@ -10,31 +10,46 @@ One file, plain configuration, works with any Git since 2.32.
 
 ## Install
 
-For agent processes only, leaving your own shell alone:
+One line, works for every tool on the machine, Claude Code, Codex,
+Cursor, Aider, Copilot, your own scripts, whatever runs `git`:
 
 ```sh
-git clone https://github.com/flyrev2/git-for-agents ~/git-for-agents
-export GIT_CONFIG_SYSTEM="$HOME/git-for-agents/gitconfig"
+curl -fsSL https://raw.githubusercontent.com/flyrev2/git-for-agents/main/install.sh | sh
 ```
 
-Put the `export` where your agent starts. For Claude Code, that is the
-`env` block in `~/.claude/settings.json`:
+It copies `gitconfig` to `~/.config/git-for-agents/` and adds one
+`include.path` line to your `~/.gitconfig`. Nothing else is touched.
+Undo with `install.sh --uninstall`, or delete that one line.
 
-```json
-{ "env": { "GIT_CONFIG_SYSTEM": "/Users/you/git-for-agents/gitconfig" } }
-```
+Settings in your own `~/.gitconfig` or in a repository win over the
+include, so anything you have already configured stays as it was.
 
-Your global and repository config still apply and still win, because
-the file is loaded at the lowest-priority system level. Note that it
-replaces the real system config, which on macOS with Xcode Git may set
-`credential.helper`. If pushes start asking for passwords, add that key
-to your global config.
+### What changes for you, the human
 
-For everyone, agent or not:
+Terminal-only behavior such as color and the pager is left alone, so most
+of the file is invisible when you run Git by hand. You will notice:
+
+- `git status` prints the short format. Use `git status --long` when you want the hints.
+- `git log` prints one line per commit. Use `git log --format=medium` for the old view.
+- `git diff` shows two lines of context instead of three.
+- Advice hints are off everywhere.
+
+### Agents only
+
+If you would rather keep your own shell exactly as it is, skip the
+installer and set one variable where the agent starts:
 
 ```sh
-git config --global include.path ~/git-for-agents/gitconfig
+export GIT_CONFIG_SYSTEM="$HOME/.config/git-for-agents/gitconfig"
 ```
+
+That loads the file at the lowest-priority system level, so your global
+config still wins. Where to put it depends on the tool. Claude Code has
+an `env` block in `~/.claude/settings.json`. For anything else, a shell
+alias works: `alias codex='GIT_CONFIG_SYSTEM=... codex'`. This replaces
+the real system config, which on macOS with Xcode Git sets
+`credential.helper`, so copy that key to your global config if pushes
+start asking for a password.
 
 ## What it saves
 
@@ -69,9 +84,9 @@ Git 2.50. Reproduce with `./measure.sh`. Tokens are roughly bytes divided by fou
 | `git merge-conflict` | 129 | 129 | 0% |
 | `git status-conflict` | 382 | 9 | 97% |
 | `git merge-abort` | 0 | 0 | 0% |
-| `git diff` | 114 | 106 | 7% |
+| `git diff` | 114 | 114 | 0% |
 | `git commit-nothing` | 366 | 152 | 58% |
-| **Total** | **4093** | **1966** | **51%** |
+| **Total** | **4093** | **1974** | **51%** |
 
 The big wins are `status`, `log`, `stash pop`, and anything that
 triggers advice. The remaining bytes are messages Git has no config
@@ -87,6 +102,8 @@ which this file already enables where it exists.
   having, `push.autoSetupRemote`, is included but commented out.
 - It does not replace `--porcelain` flags. When a command has a machine
   format, use it. This file covers the commands agents run without one.
+- It does not set `diff.noprefix`. That saves a few bytes but makes
+  `git diff | git apply` fail, which agents do all the time.
 
 ## License
 

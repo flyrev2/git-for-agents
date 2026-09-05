@@ -4,25 +4,17 @@
 # coding agents. Errors, conflicts and rejections stay fully visible;
 # only informational success output is trimmed.
 #
-# Install for agents only (your own shell is unaffected):
-#   export GIT_CONFIG_SYSTEM="$HOME/git-for-agents/gitconfig"
-# Or everywhere:
-#   git config --global include.path "$HOME/git-for-agents/gitconfig"
+# Install:  curl -fsSL https://raw.githubusercontent.com/flyrev2/git-for-agents/main/install.sh | sh
 #
 # Everything here is plain configuration. Anything in your global or
-# repository config, or given with "git -c", overrides it.
+# repository config, or given with "git -c", overrides it. Settings
+# that only matter on a terminal (color, pager) are left at their
+# defaults, so Git already behaves normally when a human runs it.
 
 [core]
-	pager = cat
 	quotePath = false
 	# Honored by Git builds with core.quiet (proposed); ignored elsewhere.
 	quiet = true
-
-[color]
-	ui = never
-
-[column]
-	ui = never
 
 [status]
 	short = true
@@ -39,7 +31,6 @@
 
 [diff]
 	context = 2
-	noprefix = true
 
 [merge]
 	stat = false
