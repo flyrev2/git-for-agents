@@ -91,9 +91,8 @@ Git 2.50. Reproduce with `./measure.sh`. Tokens are roughly bytes divided by fou
 The big wins are `status`, `log`, `stash pop`, and anything that
 triggers advice. The remaining bytes are messages Git has no config
 knob for, such as `Switched to branch` and commit summaries. Those need
-`--quiet` per command, or the proposed `core.quiet` setting in
-[this Git branch](https://github.com/flyrev2/git4ai/tree/agent-quiet),
-which this file already enables where it exists.
+`--quiet` per command, or a `core.quiet` setting that Git does not have
+yet. This file already sets it, so it takes effect if that ever lands.
 
 ## What it does not do
 
