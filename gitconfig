@@ -1,0 +1,115 @@
+# git-for-agents: the shortest possible Git output on success.
+#
+# Meant for processes that read every byte of Git output, such as
+# coding agents. Errors, conflicts and rejections stay fully visible;
+# only informational success output is trimmed.
+#
+# Install for agents only (your own shell is unaffected):
+#   export GIT_CONFIG_SYSTEM="$HOME/git-for-agents/gitconfig"
+# Or everywhere:
+#   git config --global include.path "$HOME/git-for-agents/gitconfig"
+#
+# Everything here is plain configuration. Anything in your global or
+# repository config, or given with "git -c", overrides it.
+
+[core]
+	pager = cat
+	quotePath = false
+	# Honored by Git builds with core.quiet (proposed); ignored elsewhere.
+	quiet = true
+
+[color]
+	ui = never
+
+[column]
+	ui = never
+
+[status]
+	short = true
+	branch = false
+	aheadBehind = false
+
+[log]
+	decorate = false
+	abbrevCommit = true
+	date = short
+
+[format]
+	pretty = %h %s
+
+[diff]
+	context = 2
+	noprefix = true
+
+[merge]
+	stat = false
+	# 1 keeps CONFLICT lines, drops "Auto-merging" and "Merge made by".
+	verbosity = 1
+
+[rebase]
+	stat = false
+
+[fetch]
+	output = compact
+	showForcedUpdates = false
+
+[help]
+	autocorrect = never
+
+# Optional behavior changes, off by default because they change what Git
+# does, not just what it prints. push.autoSetupRemote avoids a rejected
+# push plus a "set upstream" hint on the first push of a new branch.
+#[push]
+#	autoSetupRemote = true
+
+# Every advice.* key. Advice is hint-only; the underlying error message
+# is still printed.
+[advice]
+	addEmbeddedRepo = false
+	addEmptyPathspec = false
+	addIgnoredFile = false
+	ambiguousFetchRefspec = false
+	amWorkDir = false
+	checkoutAmbiguousRemoteBranchName = false
+	commitBeforeMerge = false
+	defaultBranchName = false
+	detachedHead = false
+	diverging = false
+	fetchRemoteHEADWarn = false
+	fetchShowForcedUpdates = false
+	forceDeleteBranch = false
+	graftFileDeprecated = false
+	ignoredHook = false
+	implicitIdentity = false
+	mergeConflict = false
+	nestedTag = false
+	objectNameWarning = false
+	pushAlreadyExists = false
+	pushFetchFirst = false
+	pushNeedsForce = false
+	pushNonFastForward = false
+	pushNonFFCurrent = false
+	pushNonFFMatching = false
+	pushRefNeedsUpdate = false
+	pushRepoLooksLikeRef = false
+	pushUnqualifiedRefName = false
+	pushUpdateRejected = false
+	rebaseTodoError = false
+	refSyntax = false
+	resetNoRefresh = false
+	resolveConflict = false
+	rmHints = false
+	sequencerInUse = false
+	setUpstreamFailure = false
+	skippedCherryPicks = false
+	sparseIndexExpanded = false
+	statusAheadBehindWarning = false
+	statusHints = false
+	statusUoption = false
+	submoduleAlternateErrorStrategyDie = false
+	submoduleMergeConflict = false
+	submodulesNotUpdated = false
+	suggestDetachingHead = false
+	updateSparsePath = false
+	waitingForEditor = false
+	worktreeAddOrphan = false
