@@ -92,7 +92,7 @@ The big wins are `status`, `log`, `stash pop`, and anything that
 triggers advice. The remaining bytes are messages Git has no config
 knob for, such as `Switched to branch` and commit summaries. Those need
 `--quiet` per command, or the proposed `core.quiet` setting in
-[this Git branch](https://github.com/flyrev2/git/tree/agent-quiet),
+[this Git branch](https://github.com/flyrev2/git4ai/tree/agent-quiet),
 which this file already enables where it exists.
 
 ## What it does not do
